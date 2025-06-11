@@ -13,7 +13,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/equinix-ms/go-vmw-guestrpc/internal/util"
+	"github.com/equinix-ms/go-vmw-guestrpc/pkg/util"
 )
 
 const (

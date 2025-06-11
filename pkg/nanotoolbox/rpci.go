@@ -8,8 +8,8 @@ import (
 	"fmt"
 	"log/slog"
 
-	"github.com/equinix-ms/go-vmw-guestrpc/internal/util"
 	"github.com/equinix-ms/go-vmw-guestrpc/pkg/hypercall"
+	"github.com/equinix-ms/go-vmw-guestrpc/pkg/util"
 )
 
 // GuestInfoID represents the type of guest information.
