@@ -11,22 +11,22 @@ import (
 	"github.com/klauspost/cpuid/v2"
 )
 
-func hypercallPreCheck() bool {
+func hypercallPreCheck() error {
 	// is this a VM according to CPUID?
 	if !cpuid.CPU.VM() {
-		return false
+		return ErrCpuIdMismatch
 	}
 
 	// .. of vendor VMWare?
 	if cpuid.CPU.HypervisorVendorID != cpuid.VMware {
-		return false
+		return ErrHypervisorMismatch
 	}
 
 	// try to change I/O privilege level to 3. If this succeeds, we are (probably) a VM. If not,
 	// we should not try to knock the backdoor port, causing a SEGV
 	if err := syscall.Iopl(3); err != nil {
-		return false
+		return ErrSetPivilegeLevel
 	}
 
-	return true
+	return nil
 }

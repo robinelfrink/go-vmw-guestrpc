@@ -82,6 +82,18 @@ var (
 
 	// ErrPayloadExpected means that we expected payload, but did not get it.
 	ErrPayloadExpected = errors.New("payload expected")
+
+	// ErrCpuIdMismatch is returned when CPUID does not suggest a VM.
+	ErrCpuIdMismatch = errors.New("not a virtual machine CPU id")
+
+	// ErrHypervisorMismatch is returned when the hypervisor is not VMware.
+	ErrHypervisorMismatch = errors.New("not running in a VMware hypervisor")
+
+	// ErrSetPivilegeLevel is returned when we cannot change I/O privilege level.
+	ErrSetPivilegeLevel = errors.New("unable to change I/O privilege level")
+
+	// ErrNoVersion is returned when no version can be read from the hypervisor.
+	ErrNoVersion = errors.New("no version reported by the hypervisor")
 )
 
 func joinCookie(c1, c2 uint32) uint64 {
@@ -114,17 +126,17 @@ func GetVersion() (uint32, uint32, error) {
 }
 
 // IsVirtual tells you if you are running virtual or not. Beware that it might segfault you in the face.
-func IsVirtual() bool {
+func IsVirtual() (bool, error) {
 	version, _, err := GetVersion()
 	if err != nil {
-		return false
+		return false, err
 	}
 
 	if version == noVersion {
-		return false
+		return false, ErrNoVersion
 	}
 
-	return true
+	return true, nil
 }
 
 // GetProcessorMHz returns the speed of the CPU clock.

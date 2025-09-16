@@ -5,8 +5,8 @@
 
 package hypercall
 
-func hypercallPreCheck() bool {
+func hypercallPreCheck() error {
 	// we have not found a way to do a generic check on non-x86/non-linux
 	// so we assume all is fine (and risk segfaults)
-	return true
+	return nil
 }
